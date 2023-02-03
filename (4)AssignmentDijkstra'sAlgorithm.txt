@@ -1,0 +1,187 @@
+#include<iostream>
+#include<map>
+using namespace std;
+#define MAX 9
+#define INF 99999
+ 
+ 
+int dijk(int G[MAX][MAX],int n,int start,int dest)
+{
+    int cost[MAX][MAX],dist[MAX],visited[MAX],pred[MAX];
+    int i,j,count,mindist,nextno;
+    map<int,string>m;
+    m[0] = "A";
+    m[1] = "B";
+    m[2] = "C";
+    m[3] = "D";
+    m[4] = "E";
+    m[5] = "F";
+    m[6] = "G";
+    m[7] = "H";
+    m[8] = "I";
+ 
+ 
+    for(i = 0;i<n;i++)
+    {
+        for(j = 0;j<n;j++)
+        {
+            if(G[i][j] == 0)
+        	{
+            	cost[i][j] = INF;
+        	}
+        	else
+        	{
+            	cost[i][j] = G[i][j];
+        	}
+        }
+    }
+ 
+    for(i=0;i<n;i++)
+    {
+        dist[i] = cost[start][i];
+        pred[i] = start;
+        visited[i] = 0;
+    }
+ 
+ 
+ 
+ 
+    dist[start] = 0;
+    visited[start] = 1;
+    count = 1;
+ 
+    while(count<n-1)
+    {
+        mindist = INF;
+        for(i=0;i<n;i++)
+        {
+        	if(dist[i]<mindist && !visited[i])
+       	 {
+            	mindist = dist[i];
+            	nextno = i;
+ 
+        	}
+        }
+ 
+        visited[nextno] = 1;
+ 
+        for(i=0;i<n;i++)
+        {
+        	if(!visited[i])
+        	{
+            	if((mindist+cost[nextno][i])<dist[i])
+                {
+               	dist[i] = mindist+cost[nextno][i];
+               	pred[i] = nextno;
+ 
+            	}
+        	}
+        }
+        count++;
+    }
+    int net=0;
+    string s = " ";
+    for(i=0;i<n;i++)
+    {
+        if(i!=start&& i==dest)
+        {
+        	net = dist[i];
+        	s.append(m[i]);
+        	s.append("<-");
+            j = i;
+        	do{
+            	j = pred[j];
+            	s.append(m[j]);
+            	s.append("<-");
+            	
+        	}while(j!=start);
+ 
+        }
+       
+   
+    }
+    int len = s.length();
+    s.erase(len-2);
+    
+    cout << s << endl;
+    
+    if(net>0){
+            	return net;
+            	}
+ 
+    else
+    {
+        cout << "This route doesnt exist" << endl;
+    }
+    return 0;
+}
+ 
+int main()
+ 
+{
+ 
+    map<int,string>m;
+    m[0] = "A";
+    m[1] = "B";
+    m[2] = "C";
+    m[3] = "D";
+    m[4] = "E";
+    m[5] = "F";
+    m[6] = "G";
+    m[7] = "H";
+    m[8] = "I";
+ 
+ 
+int TT[MAX][MAX] = {{0, 4, 0, 0, 0, 0, 0, 8, 0}, 
+                      {4, 0, 8, 0, 0, 0, 0, 11, 0}, 
+                      {0, 8, 0, 7, 0, 4, 0, 0, 2}, 
+                      {0, 0, 7, 0, 9, 14, 0, 0, 0}, 
+                      {0, 0, 0, 9, 0, 10, 0, 0, 0}, 
+                      {0, 0, 4, 0, 10, 0, 2, 0, 0}, 
+                      {0, 0, 0, 14, 0, 2, 0, 1, 6}, 
+                      {8, 11, 0, 0, 0, 0, 1, 0, 7}, 
+                      {0, 0, 2, 0, 0, 0, 6, 7, 0} 
+                     };
+ 
+ 
+ 
+ 
+ 
+    int i,j,n,start,dest;
+ 
+    cout << "Based on your node selection,we will suggest you the shortest path" << endl;
+ 
+    for(i=0;i<9;i++)
+    {
+        if(i%5 == 0)
+        {
+            cout << "\n";
+        	cout << i+1 << " - " << m[i] << "\t";
+        }
+        else
+        {
+        	cout << i+1 << " - " << m[i] << "\t";
+        }
+       
+    }
+    cout << "\n\n";
+    int c,d;
+    
+        
+        cout << "Enter the starting point[number] : ";
+        cin >> c;
+        cout << "Enter the destination point[number] : ";
+        cin >> d;
+        int count = 0;
+       
+    cout << "\n\n";
+         cout << "The shortest path is: ";
+        int dist = dijk(TT,9,c-1,d-1);
+        
+        
+        cout  << "Total cost the of shortest path is : " << dist << " dollars."<< endl;
+        cout << "\n\n";
+       
+        return 0;
+    }
+ 
