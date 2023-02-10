@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+void lcsubstr(string a,string b)
+{
+    string ans;
+    int flg=0;
+    for(int i=0;i<a.length();i++)
+    {
+        for(int j=i;j<a.length();j++)
+        {
+		  // substring of a of length (j-i+1)
+            string x=a.substr(i,j-i+1);
+            int t=0;
+            for(int k=0;k<b.length();k++)
+            {
+				// if character of substring matches
+				// that of other string
+                if(b[k]==x[t])
+                {
+                    t++;
+                }
+				// if substring found
+                else if(t==x.length())
+                {
+                    break;
+                }
+                else
+                {
+                    t=0;
+                }
+            }
+            if(t==x.length())
+            {
+                flg=1;
+				// if the length of found substring 
+				// is greater than that of result 
+				// update result
+                if(ans.length()<x.length())
+                    ans=x;
+            }
+        }
+    }
+    if(flg)
+        cout << "Output="<<ans << '\n';
+    else
+        cout <<"No Common Substrings.\n";
+  return;
+}
+int main()
+{
+	string str1,str2;
+    cout << "str1=";
+    cin  >> str1;
+    cout << "str2=";
+    cin >> str2;
+    lcsubstr(str1,str2);
+}
